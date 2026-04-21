@@ -1,0 +1,66 @@
+services:
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    restart: unless-stopped
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus_data:/prometheus
+
+    # --config.file: Tells the Prometheus binary exactly where to
+    # look for its configuration. We mapped the local prometheus.yml
+    # to this internal path in the volumes section, so this command
+    # ensures Prometheus actually reads it.
+
+    # --storage.tsdb.path: Defines where the Time Series Database (TSDB)
+    # stores the actual data (your historical metrics). We point this to
+    # /prometheus because that is where the persistent Docker volume is mounted.
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+    ports:
+      - "9090:9090"
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    restart: unless-stopped
+    ports:
+      - "3001:3000"
+    volumes:
+      - grafana_data:/var/lib/grafana
+    environment:
+      # credentials from .env
+      - GF_SECURITY_ADMIN_USER=${GRAFANA_USER}
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASS}
+
+  node-exporter:
+    image: prom/node-exporter:latest
+    container_name: node-exporter
+    restart: unless-stopped
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+
+    # --path.procfs, --path.rootfs, --path.sysfs: By default, Node Exporter
+    # looks at /proc and /sys to find CPU and RAM info. Since it's in a container,
+    # those folders only show "container" stats. These flags tell it to look at
+    # the folders we mounted on the actual machine host instead in volumes section.
+
+    # Exclusion Filter: This is a regex that tells Node Exporter:
+    # "Ignore virtual file systems like /dev or /proc when reporting Disk Usage."
+    # This keeps your dashboard clean so you only see your actual hard drives
+    # (like / or /home) rather than 20 tiny system partitions.
+    command:
+      - '--path.procfs=/host/proc'
+      - '--path.rootfs=/rootfs'
+      - '--path.sysfs=/host/sys'
+      - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
+    ports:
+      - "9100:9100"
+
+volumes:
+  prometheus_data:
+  grafana_data:

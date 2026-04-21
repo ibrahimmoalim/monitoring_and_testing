@@ -1,0 +1,39 @@
+# This configuration file tells Prometheus how often to collect data
+# and where to find it. Without this, Prometheus is just
+# an empty database with no data flowing in.
+
+# global:: These settings apply to every data source Prometheus
+# tracks unless you override them specifically for a single job.
+global:
+  # This is the heartbeat. It tells Prometheus to "pull" (scrape)
+  # new data from your targets every 15 seconds.
+  # - Lowering it (e.g., 5s) gives higher resolution but uses more disk space.
+  # - Raising it (e.g., 1m) saves space but makes your graphs look "blocky."
+  scrape_interval: 15s
+
+# This is the start of the list of "targets" or services you want to monitor.
+# Think of this as the "Address Book" for Prometheus.
+scrape_configs:
+
+    # Job 1: Self-Monitoring
+    # job_name: 'prometheus': A label used to group the data.
+    # In Grafana, you can filter metrics by this name.
+  - job_name: 'prometheus'
+    # Tells Prometheus that these addresses are hard-coded
+    # and won't change (as opposed to "Service Discovery"
+    # where addresses are found automatically).
+    static_configs:
+        # Prometheus is monitoring itself. It exposes its own performance
+        # metrics (like memory usage and how many samples it's ingesting) on port 9090.
+      - targets: ['localhost:9090']
+
+    # Job 2: The Server Metrics (Node Exporter)
+    # job_name: 'node': Usually refers to "Node Exporter,"
+    # the tool that looks at the physical (or virtual) machine.
+  - job_name: 'node'
+    static_configs:
+        # node-exporter: This matches the service name you wrote in your
+        # docker-compose.yml. Docker acts as a DNS server and translates
+        # this name to the correct internal IP address.
+        # 9100: The default port where Node Exporter shares hardware stats (CPU, RAM, Disk).
+      - targets: ['node-exporter:9100']
