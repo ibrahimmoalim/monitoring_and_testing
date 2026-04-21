@@ -14,10 +14,9 @@ Create a file named `.env` in your `~/monitoring` folder.
 Add:
 
 GRAFANA_USER=(username)
-
 GRAFANA_PASS=(secure-password)
 
-In docker-compose.yml, change the line to:
+In docker-compose.yml, under section granfana-environment:
 - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_USER}
 - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASS}
 
