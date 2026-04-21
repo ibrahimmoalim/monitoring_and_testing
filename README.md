@@ -34,9 +34,9 @@ docker-compose up -d
 ---
 
 ### How to access your new stack
-1.  **Prometheus UI:** Navigate to `http://localhost:9090`. Click "Status" -> "Targets" to ensure the `node` job is green.
-2.  **Grafana UI:** Navigate to `http://localhost:3001`.
+1.  **Prometheus UI:** Navigate to http://localhost:9090. Click "Status" -> "Targets" to ensure the `node` job is green.
+2.  **Grafana UI:** Navigate to http://localhost:3001.
     * **User:** `user set with .env` / **Password:** `pass set with .env`.
 3.  **Connect them:** In Grafana, go to **Connections** -> **Data Sources** -> **Add Prometheus**.
-    * For the URL, use `http://prometheus:9090` (Docker handles the DNS for you).
+    * For the URL, use http://prometheus:9090 (Docker handles the DNS for you).
 4.  **Instant Dashboard:** To see your server stats immediately, go to **Dashboards** -> **New** -> **Import** and type ID `1860` (the official Node Exporter Full dashboard).
