@@ -37,3 +37,8 @@ scrape_configs:
         # this name to the correct internal IP address.
         # 9100: The default port where Node Exporter shares hardware stats (CPU, RAM, Disk).
       - targets: ['node-exporter:9100']
+
+  - job_name: 'cadvisor'
+    static_configs:
+      # Use the INTERNAL port (8080), not the mapped host port (8081)
+      - targets: ['cadvisor:8080']

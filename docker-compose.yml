@@ -35,6 +35,8 @@ services:
       - GF_SECURITY_ADMIN_USER=${GRAFANA_USER}
       - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASS}
 
+  # This monitors the server/machine you're using
+  # (my debian)
   node-exporter:
     image: prom/node-exporter:latest
     container_name: node-exporter
@@ -60,6 +62,26 @@ services:
       - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
     ports:
       - "9100:9100"
+
+  cadvisor:
+    # use the image below instead of 'google/cadvisor:latest'
+    image: gcr.io/cadvisor/cadvisor:v0.47.0
+    container_name: cadvisor
+    restart: unless-stopped
+    # cAdvisor requires root-level access to the host's kernel information
+    # to collect container metrics accurately.
+    privileged: true
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+      - /dev/disk/:/dev/disk:ro
+    devices:
+      - /dev/kmsg
+    ports:
+      - "8081:8080"
+
 
 volumes:
   prometheus_data:
