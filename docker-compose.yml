@@ -3,6 +3,10 @@ services:
   prometheus:
     image: prom/prometheus:latest
     container_name: prometheus
+    # this is for remote servers because we need
+    # to map localhost on the machine to localhost of container
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     restart: unless-stopped
     volumes:
       - ./prometheus.yml:/etc/prometheus/prometheus.yml

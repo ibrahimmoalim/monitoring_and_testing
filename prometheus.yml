@@ -42,3 +42,16 @@ scrape_configs:
     static_configs:
       # Use the INTERNAL port (8080), not the mapped host port (8081)
       - targets: ['cadvisor:8080']
+
+  # Monitor remote servers
+  - job_name: 'remote-servers-via-ssh'
+    static_configs:
+      - targets: ['host.docker.internal:9101']
+        # labels are important so we can see which server is being monitored on 9101
+        labels:
+          instance: 'aws-ec2-production'
+          provider: 'aws'
+      # - targets: ['localhost:9102']
+      #   labels:
+      #     instance: 'linode-web-server'
+      #     provider: 'linode'
