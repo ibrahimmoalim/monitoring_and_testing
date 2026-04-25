@@ -156,5 +156,3 @@ If you want the titles on the left and values on the right (like your terminal):
 
 > [!TIP]
 > To fix the **Hostname** from `9f326a4caac1` to `Debian`, remember to add `hostname: ${HOSTNAME}` to your `docker-compose.yml` and restart with `docker compose up -d`. Your new panel will update itself automatically!
-
-**Does your table now show "Debian" in a clean column without all the extra version text?**
