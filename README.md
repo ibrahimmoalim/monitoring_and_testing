@@ -75,6 +75,7 @@ Since you have **cAdvisor** and **Jenkins**, you should definitely grab these ID
 | **Docker Containers** | **14282** | Visualizes everything from cAdvisor (CPU/RAM per container). |
 | **Jenkins** | **9964** | Shows build health, queue times, and success rates. |
 | **Alternative Node** | **11074** | A cleaner, more modern look for host metrics. |
+| **JVM (Micrometer)** | **4701** | Shows **Heap Usage, CPU Usage, HTTP Requests, and Database Connections** |
 
 ---
 
