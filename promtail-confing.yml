@@ -1,0 +1,42 @@
+# This tells Promtail to grab your Docker container logs and push them to Loki
+
+# Server block configures the internal web server for Promtail itself
+server:
+  # The port where Promtail exposes its own metrics and health check
+  http_listen_port: 9080
+  # 0 means randomly assign a gRPC port (not needed for basic setups)
+  grpc_listen_port: 0
+
+# Positions file keeps track of how much of each log file Promtail has read.
+# If Promtail restarts, it reads this file so it knows where to resume,
+# preventing it from sending duplicate logs to Loki.
+positions:
+  filename: /tmp/positions.yaml
+
+# Clients block defines where Promtail should push the collected logs
+clients:
+  # The internal Docker URL to Loki's log ingest API
+  - url: http://loki:3100/loki/api/v1/push
+
+# Scrape configs tell Promtail where to look for logs and how to label them
+scrape_configs:
+    # A name to group this specific scraping task
+  - job_name: docker
+
+    # Docker Service Discovery automatically finds running containers
+    docker_sd_configs:
+        # Connects to the host's Docker engine to listen for container events
+      - host: unix:///var/run/docker.sock
+        # Checks for new or stopped containers every 5 seconds
+        refresh_interval: 5s
+
+    # Relabel configs modify the metadata attached to the logs before sending them to Loki
+    relabel_configs:
+      # This block extracts the actual container name and assigns it to a clean label called 'container'
+
+        # The raw internal metadata string (e.g., "/prometheus")
+      - source_labels: [__meta_docker_container_name]
+        # Regex to strip out the leading forward slash
+        regex: '/(.*)'
+        # The final clean label name you will query in Grafana (e.g., container="prometheus")
+        target_label: 'container'
