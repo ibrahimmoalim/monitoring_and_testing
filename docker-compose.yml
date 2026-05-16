@@ -38,6 +38,8 @@ services:
       # credentials from .env
       - GF_SECURITY_ADMIN_USER=${GRAFANA_USER}
       - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASS}
+    networks:
+      - monitoring-network
 
   # This monitors the server/machine you're using
   # (my debian)
@@ -92,9 +94,13 @@ services:
     container_name: loki
     ports:
       - "3100:3100"
+    volumes:
+      - loki_data:/loki
     # Uses Loki's default internal configuration file
     command: -config.file=/etc/loki/local-config.yaml
     restart: unless-stopped
+    networks:
+      - monitoring-network
 
   # Promtail: The log collector that grabs container logs and pushes them to Loki
   promtail:
@@ -113,6 +119,8 @@ services:
     depends_on:
       # Ensures Loki starts up completely before Promtail tries to stream logs to it
       - loki
+    networks:
+      - monitoring-network
 
   # Tempo: The storage backend for distributed tracing (Maps user request pathways)
   tempo:
@@ -121,6 +129,9 @@ services:
     volumes:
       # Mounts the custom configuration file created in this dir
       - ./tempo-config.yml:/etc/tempo.yaml
+      # persistent storage
+      - tempo_data:/var/tempo
+
     # boot Tempo using the custom config
     # the grafana/tempo image explicitly expects the cleaner Exec Form (Array)
     # to ensure it never drops traces during a reboot.
@@ -133,8 +144,18 @@ services:
       # OTLP HTTP ingest port. Alternative endpoint for apps utilizing HTTP-based tracing.
       - "4318:4318"
     restart: unless-stopped
+    networks:
+      - monitoring-network
 
 
 volumes:
   prometheus_data:
   grafana_data:
+  loki_data:
+  tempo_data:
+
+# explicitly define a network and tie Grafana, Loki, and Tempo
+# directly to it so they can see each other instantly.
+networks:
+  monitoring-network:
+    driver: bridge
