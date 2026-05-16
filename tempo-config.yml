@@ -1,8 +1,5 @@
 # This sets up Tempo to receive tracing data via OpenTelemetry protocol
 
-# Allows Tempo to accept incoming tracing data over standard HTTP requests
-stream_over_http: true
-
 # Configures the internal operation web server for Tempo
 server:
   # The port used for Tempo's API and dashboard troubleshooting
@@ -58,4 +55,4 @@ storage:
     backend: local
     local:
       # The internal directory where Tempo writes the trace files
-      path: /tmp/tempo/blocks
+      path: /var/tempo/blocks
