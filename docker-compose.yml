@@ -95,6 +95,7 @@ services:
     ports:
       - "3100:3100"
     volumes:
+      - ./loki-config.yml:/etc/loki/local-config.yaml
       - loki_data:/loki
     # Uses Loki's default internal configuration file
     command: -config.file=/etc/loki/local-config.yaml
