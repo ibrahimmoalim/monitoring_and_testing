@@ -76,6 +76,8 @@ Since you have **cAdvisor** and **Jenkins**, you should definitely grab these ID
 | **Jenkins** | **9964** | Shows build health, queue times, and success rates. |
 | **Alternative Node** | **11074** | A cleaner, more modern look for host metrics. |
 | **JVM (Micrometer)** | **4701** | Shows **Heap Usage, CPU Usage, HTTP Requests, and Database Connections** |
+| **Loki Logs Overview** | **13639** | Visual breakdowns of your log volume over time, quick filters to parse log levels (`INFO`, `WARN`, `ERROR`), and a clean container log stream viewer. |
+| **Spring Boot OpenTelemetry Tracing** | **19024** | A dedicated dashboard for OpenTelemetry/Micrometer tracing endpoints. It breaks down your slowest API endpoints, highlights tracing spans that threw database exceptions, and more. |
 
 ---
 
