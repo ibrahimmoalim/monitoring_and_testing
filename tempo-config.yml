@@ -23,31 +23,6 @@ distributor:
         # and network bandwidth.
         grpc:
 
-# The Ingester temporarily holds traces in memory before flushing them to disk
-ingester:
-  lifecycler:
-    address: 127.0.0.1
-    ring:
-      kvstore:
-        # Stores routing information in RAM (perfect for single-container setups,
-        # meaning one tempo container to receive data (distributer), and process it (ingester))
-        store: inmemory
-      # No data replication needed since we only have one Tempo container
-      replication_factor: 1
-    final_sleep: 0s
-  # How long a trace block can sit idle in memory before being closed (1 minute)
-  chunk_idle_period: 1m
-  # The maximum age of a data block in memory before forcing a flush to disk
-  max_block_duration: 5m
-
-# The Compactor cleans up and optimizes trace data on disk
-compactor:
-  compaction:
-    # How often the compactor checks for small files to combine
-    compactor_cycle: 30s
-    # How long traces are kept before being deleted automatically (saves disk space)
-    block_retention: 24h
-
 # Defines where the actual trace data is stored
 storage:
   trace:
