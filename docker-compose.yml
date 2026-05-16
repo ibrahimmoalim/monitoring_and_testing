@@ -124,7 +124,7 @@ services:
     # boot Tempo using the custom config
     # the grafana/tempo image explicitly expects the cleaner Exec Form (Array)
     # to ensure it never drops traces during a reboot.
-    command: [ "-config.file=/etc/tempo.yaml" ]
+    command: [ "--config.file=/etc/tempo.yaml" ]
     ports:
       # Tempo's web API port (Grafana uses this to fetch and display traces)
       - "3200:3200"
