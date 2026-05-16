@@ -86,6 +86,54 @@ services:
     ports:
       - "8083:8080"
 
+  # Loki: The central storage engine for all logs (The "database" for text logs)
+  loki:
+    image: grafana/loki:3.0.0
+    container_name: loki
+    ports:
+      - "3100:3100"
+    # Uses Loki's default internal configuration file
+    command: -config.file=/etc/loki/local-config.yaml
+    restart: unless-stopped
+
+  # Promtail: The log collector that grabs container logs and pushes them to Loki
+  promtail:
+    image: grafana/promtail:3.0.0
+    container_name: promtail
+    volumes:
+      # Mounts the custom configuration file created in this dir
+      - ./promtail-config.yml:/etc/promtail/config.yml
+      # Allows Promtail to talk to Docker daemon to read other container logs
+      - /var/run/docker.sock:/var/run/docker.sock
+      # Optional: Allows Promtail to read system logs from the underlying Debian host
+      - /var/log:/var/log
+    # Explicitly tells Promtail to read the custom configuration mount
+    command: -config.file=/etc/promtail/config.yml
+    restart: unless-stopped
+    depends_on:
+      # Ensures Loki starts up completely before Promtail tries to stream logs to it
+      - loki
+
+  # Tempo: The storage backend for distributed tracing (Maps user request pathways)
+  tempo:
+    image: grafana/tempo:latest
+    container_name: tempo
+    volumes:
+      # Mounts the custom configuration file created in this dir
+      - ./tempo-config.yml:/etc/tempo.yaml
+    # boot Tempo using the custom config
+    # the grafana/tempo image explicitly expects the cleaner Exec Form (Array)
+    # to ensure it never drops traces during a reboot.
+    command: [ "-config.file=/etc/tempo.yaml" ]
+    ports:
+      # Tempo's web API port (Grafana uses this to fetch and display traces)
+      - "3200:3200"
+      # OTLP gRPC ingest (Your Spring Boot app can send traces here)
+      - "4317:4317"
+      # OTLP HTTP ingest port. Alternative endpoint for apps utilizing HTTP-based tracing.
+      - "4318:4318"
+    restart: unless-stopped
+
 
 volumes:
   prometheus_data:
