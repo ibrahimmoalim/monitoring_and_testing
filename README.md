@@ -159,3 +159,34 @@ If you want the titles on the left and values on the right (like your terminal):
 
 > [!TIP]
 > To fix the **Hostname** from `9f326a4caac1` to `Debian`, remember to add `hostname: ${HOSTNAME}` to your `docker-compose.yml` and restart with `docker compose up -d`. Your new panel will update itself automatically!
+
+## Get static ip for your host device
+
+This is so you don't have to change your ip addr line in `prometheus.yml` for `spring boot`
+
+Follow these steps in the terminal:
+- Get the name of the network you're connected to
+    ```bash
+    nmcli connection show
+    ```
+
+- Apply the static settings permanently to that specific connection:
+(Replace connectionName with your actual connection name)
+    ```bash
+    sudo nmcli connection modify "connectionName" ipv4.addresses "192.168.100.50/24"
+    ```
+    > this is for 192.168.100.x subnet
+    ```bash
+    sudo nmcli connection modify "connectionName" ipv4.gateway "192.168.100.1"
+    ```
+    ```bash
+    sudo nmcli connection modify "connectionName" ipv4.dns "8.8.8.8,1.1.1.1"
+    ```
+    ```bash
+    sudo nmcli connection modify "connectionName" ipv4.method "manual"
+    ```
+
+- Restart connection
+    ```bash
+    sudo systemctl restart NetworkManager
+    ```
