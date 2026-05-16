@@ -25,6 +25,8 @@ services:
       - '--storage.tsdb.path=/prometheus'
     ports:
       - "9090:9090"
+    networks:
+      - monitoring-network
 
   grafana:
     image: grafana/grafana:latest
@@ -51,6 +53,7 @@ services:
       - /proc:/host/proc:ro
       - /sys:/host/sys:ro
       - /:/rootfs:ro
+      - /run:/run:ro
 
     # --path.procfs, --path.rootfs, --path.sysfs: By default, Node Exporter
     # looks at /proc and /sys to find CPU and RAM info. Since it's in a container,
@@ -68,6 +71,8 @@ services:
       - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
     ports:
       - "9100:9100"
+    networks:
+      - monitoring-network
 
   cadvisor:
     # use the image below instead of 'google/cadvisor:latest'
@@ -87,6 +92,8 @@ services:
       - /dev/kmsg
     ports:
       - "8083:8080"
+    networks:
+      - monitoring-network
 
   # Loki: The central storage engine for all logs (The "database" for text logs)
   loki:
