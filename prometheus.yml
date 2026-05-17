@@ -15,6 +15,13 @@ global:
 rule_files:
   - "/etc/prometheus/node_alerts.yml"
 
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets:
+            # uses docker's internal network DNS name
+            - 'alertmanager:9093'
+
 # This is the start of the list of "targets" or services you want to monitor.
 # Think of this as the "Address Book" for Prometheus.
 scrape_configs:

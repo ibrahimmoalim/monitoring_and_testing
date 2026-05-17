@@ -24,6 +24,8 @@ services:
     command:
       - '--config.file=/etc/prometheus/prometheus.yml'
       - '--storage.tsdb.path=/prometheus'
+      # Added this so you can reload configs easily
+      - '--web.enable-lifecycle'
     ports:
       - "9090:9090"
     networks:
@@ -41,6 +43,24 @@ services:
       # credentials from .env
       - GF_SECURITY_ADMIN_USER=${GRAFANA_USER}
       - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASS}
+    networks:
+      - monitoring-network
+
+  alertmanager:
+    image: prom/alertmanager:latest
+    container_name: alertmanager
+    restart: unless-stopped
+    ports:
+      # only localhost can access alertmanager
+      - "127.0.0.1:9093:9093"
+    # Use the config for alertmanager inside this compose file
+    # unlike the prometheus config which has it's own file
+    # this allows us to use .env variables
+    configs:
+      - source: alertmanager_config
+        target: /etc/alertmanager/alertmanager.yml
+    command:
+      - '--config.file=/etc/alertmanager/alertmanager.yml'
     networks:
       - monitoring-network
 
@@ -168,3 +188,28 @@ volumes:
 networks:
   monitoring-network:
     driver: bridge
+
+# config for alertmanager
+configs:
+  alertmanager_config:
+    content: |
+      global:
+        resolve_timeout: 5m
+
+      route:
+        group_by: ['alertname', 'instance']
+        group_wait: 30s
+        group_interval: 5m
+        repeat_interval: 4h
+        receiver: 'gmail-notifications'
+
+      receivers:
+      - name: 'gmail-notifications'
+        email_configs:
+        - to: '${GMAIL}'
+          from: '${GMAIL}'
+          smarthost: 'smtp.gmail.com:587'
+          auth_username: '${GMAIL}'
+          auth_password: '${GMAIL_PASS}'
+          auth_identity: '${GMAIL}'
+          send_resolved: true
