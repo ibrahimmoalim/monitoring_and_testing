@@ -24,7 +24,7 @@ groups:
 
       # Alert if Low Memory (Less than 10% remaining)
       - alert: LowMemory
-        expr: (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes) * 100 < 99
+        expr: (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes) * 100 < 10
         for: 2m
         labels:
           severity: warning
