@@ -10,6 +10,7 @@ services:
     restart: unless-stopped
     volumes:
       - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./node_alerts.yml:/etc/prometheus/node_alerts.yml
       - prometheus_data:/prometheus
 
     # --config.file: Tells the Prometheus binary exactly where to

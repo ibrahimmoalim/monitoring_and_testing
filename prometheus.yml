@@ -11,6 +11,10 @@ global:
   # - Raising it (e.g., 1m) saves space but makes your graphs look "blocky."
   scrape_interval: 15s
 
+# Tell Prometheus to read the alerts file inside its internal directory
+rule_files:
+  - "/etc/prometheus/node_alerts.yml"
+
 # This is the start of the list of "targets" or services you want to monitor.
 # Think of this as the "Address Book" for Prometheus.
 scrape_configs:

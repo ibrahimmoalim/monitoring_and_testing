@@ -1,0 +1,33 @@
+groups:
+  - name: node_exporter_alerts
+    rules:
+      # Alert if a server goes completely offline
+      - alert: InstanceDown
+        # expr: up{job="node"} == 0   # this is for node-exporter only (server)
+        expr: up == 0      # this is for all services
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Instance {{ $labels.instance }} is down"
+          description: "The Node Exporter target has been offline for more than 1 minute."
+
+      # Alert if CPU usage is sustained above 90%
+      - alert: HighCpuLoad
+        expr: 100 - (avg by(instance) (rate(node_cpu_seconds_total{mode="idle"}[5m])) * 100) > 90
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High CPU load on {{ $labels.instance }}"
+          description: "CPU usage is at {{ printf \"%.2f\" $value }}% for the last 5 minutes."
+
+      # Alert if Low Memory (Less than 10% remaining)
+      - alert: LowMemory
+        expr: (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes) * 100 < 99
+        for: 2m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Low Memory on {{ $labels.instance }}"
+          description: "Available memory has dropped below 10% (Current: {{ printf \"%.2f\" $value }}%)."
