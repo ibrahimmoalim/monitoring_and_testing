@@ -79,5 +79,22 @@ Now that the containers are running, you need to tell Grafana where to find them
 
 ### Step 4: How to see data
 
+The Dashboard method (best):
+
+For **Loki** (logs) add the dashboard `13639`, select loki in DS in import screen, if no data shown, fix by adding LOKI_DS variable, and also click on the `app` variable and below the `Query options` in the `label` select `service_name` or `container` and save.
+If it's still not showing data, click on the first panel and paste this in the `query code` box:
+```
+{service_name="$app"} |= "$search"
+```
+Save.
+For the second panel, paste this:
+```
+{service_name="$app"} |= "$search" | logfmt
+```
+Save.
+Now you should be able to select by service_name or container in the `app` dropdown on the dashboard screen top left, and see logs.
+
+The Explorer tab method:
+
 * **For Logs (Loki):** Go to the **Explore** tab in Grafana, change the data source at the top left to **Loki**, click **Label browser**, select `container`, pick one of your containers (like `prometheus`), and click **Run query**. You will see your live container logs streaming in.
 * **For Traces (Tempo):** To see traces, your applications themselves need to be written to send trace data (using a library like OpenTelemetry) to `http://localhost:4317` (gRPC) or `http://localhost:4318` (HTTP). Node Exporter and cAdvisor do not inherently produce tracing data, so you won't see traces until you connect an instrumented application (like a Node.js, Go, or Python microservice).
