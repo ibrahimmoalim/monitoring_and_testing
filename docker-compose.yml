@@ -26,8 +26,9 @@ services:
       - '--storage.tsdb.path=/prometheus'
       # Added this so you can reload configs easily
       - '--web.enable-lifecycle'
+      - '--web.external-url=http://localhost:9090/'
     ports:
-      - "9090:9090"
+      - "127.0.0.1:9090:9090"
     networks:
       - monitoring-network
 
@@ -61,6 +62,7 @@ services:
         target: /etc/alertmanager/alertmanager.yml
     command:
       - '--config.file=/etc/alertmanager/alertmanager.yml'
+      - '--web.external-url=http://localhost:9093'
     networks:
       - monitoring-network
 
