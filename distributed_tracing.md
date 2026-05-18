@@ -2,7 +2,7 @@
 
 ---
 
-### Step 1: Clean Up Code Files
+### Step 1: `application.properties`
 
 **`application.properties`**: Make sure the custom console logging layout explicitly matches the agent's key format:
 ```properties
