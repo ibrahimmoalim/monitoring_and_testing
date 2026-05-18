@@ -26,7 +26,7 @@ Before updating your Docker Compose file, you need to create basic configuration
 
 **`promtail-config.yml`** (Tells Promtail to scrape your Docker container logs and send them to Loki)
 
-Check [here](https://github.com/ibrahimmoalim/prometheus_and_grafana/blob/main/promtail-confing.yml)
+Check [here](https://github.com/ibrahimmoalim/prometheus_and_grafana/blob/main/promtail-config.yml)
 
 **`tempo-config.yml`** (A basic single-binary configuration for Tempo)
 
