@@ -155,7 +155,7 @@ services:
 
   # Tempo: The storage backend for distributed tracing (Maps user request pathways)
   tempo:
-    image: grafana/tempo:latest
+    image: grafana/tempo:2.4.1
     container_name: tempo
     volumes:
       # Mounts the custom configuration file created in this dir
@@ -168,12 +168,13 @@ services:
     # to ensure it never drops traces during a reboot.
     command: [ "--config.file=/etc/tempo.yaml" ]
     ports:
+      # the '127.0.0.1' Explicitly binds port 4318 to your host's localhost
       # Tempo's web API port (Grafana uses this to fetch and display traces)
-      - "3200:3200"
+      - "127.0.0.1:3200:3200"
       # OTLP gRPC ingest (Your Spring Boot app can send traces here)
-      - "4317:4317"
+      - "127.0.0.1:4317:4317"
       # OTLP HTTP ingest port. Alternative endpoint for apps utilizing HTTP-based tracing.
-      - "4318:4318"
+      - "127.0.0.1:4318:4318"
     restart: unless-stopped
     networks:
       - monitoring-network
