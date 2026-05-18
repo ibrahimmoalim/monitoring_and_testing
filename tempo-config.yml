@@ -5,6 +5,8 @@ server:
   # The port used for Tempo's API and dashboard troubleshooting
   http_listen_port: 3200
 
+multitenancy_enabled: false
+
 # The Distributor is the entry point for traces entering Tempo
 distributor:
   receivers:
