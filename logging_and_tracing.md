@@ -69,7 +69,7 @@ Now that the containers are running, you need to tell Grafana where to find them
 
 1. Go to Connections -> Data sources -> Add data source.
 2. Select Tempo.
-3. Set the URL to: http://tempo:3200
+3. Set the URL to: `http://tempo:3200`
 4. Scroll down to the **Trace to logs** section. This is the "magic link" that lets you jump from a trace to a log.
 * Set the Data source to **Loki**.
 * Set the Tags to `container` (matching the label created in Promtail).
