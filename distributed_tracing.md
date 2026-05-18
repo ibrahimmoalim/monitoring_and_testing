@@ -41,7 +41,7 @@ mvn spring-boot:run \
 
 ---
 
-## Explaining what would appear in the Grafana Dashboard in `Explore` tab
+## Explaining the Tempo query in Grafana
 
 ### 1. The Left Panel: Trace Search Results
 
