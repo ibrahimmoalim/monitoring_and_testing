@@ -1,12 +1,12 @@
-This setup covers the "Hybrid Monitoring" architecture: using **Ansible** to deploy exporters to remote cloud instances, and **Docker + SSH Tunnels** to bring those metrics back to your local Prometheus safely through a firewall.
+This setup covers the "Hybrid Monitoring" architecture: using **Ansible** to deploy exporters to remote cloud instances, and **Docker + SSH Tunnels** to bring those metrics back to the local Prometheus safely through a firewall.
 
 ---
 
 ## 1. Ansible Setup
-This phase handles the remote installation on your EC2/Linode instances.
+This phase handles the remote installation on the EC2/Linode instances.
 
 ### `ansible.cfg`
-Place this in your project root. It ensures Ansible uses your SSH aliases and finds the inventory automatically.
+Place this in the project root. It ensures Ansible uses the SSH aliases and finds the inventory automatically.
 ```ini
 [defaults]
 inventory = ./inventory
@@ -16,7 +16,7 @@ interpreter_python = /usr/bin/python3.10
 ```
 
 ### `inventory`
-List your servers using the aliases defined in your `~/.ssh/config`.
+List the servers using the aliases defined in the `~/.ssh/config`.
 ```ini
 [remote_servers]
 semaphore ansible_python_interpreter=/usr/bin/python3.10
@@ -46,10 +46,10 @@ The automation to install and enable the exporter.
 ---
 
 ## 2. SSH Configuration & Tunnels
-This bridges the remote port 9100 to your local machine.
+This bridges the remote port 9100 to the local machine.
 
 ### `~/.ssh/config`
-Edit your local SSH config to enable port forwarding automatically.
+Edit the local SSH config to enable port forwarding automatically.
 ```text
 Host semaphore
     HostName <YOUR_EC2_IP>
@@ -68,7 +68,7 @@ ssh -f -N semaphore
 ---
 
 ## 3. Docker & Networking
-This setup allows Prometheus (inside Docker) to talk to the SSH tunnels (on your Debian Host).
+This setup allows Prometheus (inside Docker) to talk to the SSH tunnels (on the Debian Host).
 
 ### `docker-compose.yml`
 ```yaml
