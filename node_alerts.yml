@@ -1,3 +1,11 @@
+# anytime you make changes in this file, run:
+# curl -X POST http://localhost:9090/-/reload
+# This reloads the alert rules for prometheus without
+# prometheus dropping active connections (if docker restart prometheus),
+# grafana dashboards won't show gaps or pauses, and if you made a syntax
+# error in this YAML, Prometheus will log the error but keep running
+# the old rules safely rather than crashing the container.
+
 groups:
   - name: node_exporter_alerts
     rules:
@@ -37,7 +45,8 @@ groups:
       # HikariCP connection pool alerts
       - alert: HikariPoolNearExhaustion
         expr: hikaricp_connections_active{pool="WalletApp-HikariPool"} > 16
-        for: 2m
+        # reduced form 2m to 10s to catch load test's 30s duration spikes
+        for: 10s
         labels:
           severity: warning
         annotations:
@@ -46,7 +55,8 @@ groups:
 
       - alert: HikariPoolPendingThreads
         expr: hikaricp_connections_pending{pool="WalletApp-HikariPool"} > 0
-        for: 1m
+        # 1m to 0s so if any thread blocks for a connection we know immediately.
+        for: 0s
         labels:
           severity: critical
         annotations:
@@ -56,7 +66,8 @@ groups:
       # Application Error Alerts
       - alert: HighHttpErrorRate
         expr: rate(http_server_requests_seconds_count{status=~"5.*"}[5m]) > 1
-        for: 2m
+        # 2m to 15s to catch alerts for the load test's 30s duration
+        for: 15s
         labels:
           severity: critical
         annotations:
