@@ -22,8 +22,14 @@ groups:
 
       # Alert if CPU usage is sustained above 90%
       - alert: HighCpuLoad
-        expr: 100 - (avg by(instance) (rate(node_cpu_seconds_total{mode="idle"}[5m])) * 100) > 90
-        for: 1m
+        # node_cpu_seconds_total{mode="idle"}[1m]: Grab the raw counter tracking
+        # how many seconds the CPU sat completely unused over the last 1 minute.
+        # rate(...): Figure out what fraction of each second was spent idling.
+        # 100 - ...: Subtract the idle percentage from 100 to flip the math into active
+        # CPU usage (e.g., 100 - 10 = 90% usage).
+        # > 90: If that final active number stays above 90, fire the alert!
+        expr: 100 - (avg by(instance) (rate(node_cpu_seconds_total{mode="idle"}[1m])) * 100) > 90
+        for: 30s
         labels:
           severity: warning
         annotations:
