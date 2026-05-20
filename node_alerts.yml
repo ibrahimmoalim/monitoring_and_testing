@@ -23,7 +23,7 @@ groups:
       # Alert if CPU usage is sustained above 90%
       - alert: HighCpuLoad
         expr: 100 - (avg by(instance) (rate(node_cpu_seconds_total{mode="idle"}[5m])) * 100) > 90
-        for: 5m
+        for: 1m
         labels:
           severity: warning
         annotations:
@@ -33,7 +33,7 @@ groups:
       # Alert if Low Memory (Less than 10% remaining)
       - alert: LowMemory
         expr: (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes) * 100 < 10
-        for: 2m
+        for: 1m
         labels:
           severity: warning
         annotations:
