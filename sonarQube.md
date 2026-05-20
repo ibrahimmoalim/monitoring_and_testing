@@ -148,7 +148,7 @@ SonarQube will then display a customized copy-pasteable command. Go to your Debi
 It will look exactly like this:
 
 ```bash
-./mvnw clean verify sonar:sonar \
+mvn clean verify sonar:sonar \
   -Dsonar.projectKey=wallet-api \
   -Dsonar.host.url=http://localhost:9000 \
   -Dsonar.token=YOUR_COPIED_TOKEN_HERE
