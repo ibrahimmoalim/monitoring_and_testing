@@ -71,7 +71,8 @@ groups:
 
       # Application Error Alerts
       - alert: HighHttpErrorRate
-        expr: rate(http_server_requests_seconds_count{status=~"5.*"}[5m]) > 1
+        # from 5m to 1m for testing reasons
+        expr: rate(http_server_requests_seconds_count{status=~"5.*"}[1m]) > 1
         # 2m to 15s to catch alerts for the load test's 30s duration
         for: 15s
         labels:
