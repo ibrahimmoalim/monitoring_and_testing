@@ -24,7 +24,7 @@ services:
     command:
       - '--config.file=/etc/prometheus/prometheus.yml'
       - '--storage.tsdb.path=/prometheus'
-      # Added this so you can reload configs easily
+      # This is for reloading configs easily
       - '--web.enable-lifecycle'
       - '--web.external-url=http://localhost:9090/'
     ports:
