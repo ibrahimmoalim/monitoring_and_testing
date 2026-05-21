@@ -149,10 +149,10 @@ It will look exactly like this:
 
 ```bash
 mvn clean verify sonar:sonar \
+  -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml \
   -Dsonar.projectKey=wallet-api \
   -Dsonar.host.url=http://localhost:9000 \
   -Dsonar.token=YOUR_COPIED_TOKEN_HERE
-
 ```
 
 ### What happens next?
