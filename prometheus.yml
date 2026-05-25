@@ -49,16 +49,33 @@ scrape_configs:
         # 9100: The default port where Node Exporter shares hardware stats (CPU, RAM, Disk).
       - targets: ['node-exporter:9100']
 
-  - job_name: 'cadvisor'
-    static_configs:
-      # Use the INTERNAL port (8080), not the mapped host port (8081)
-      - targets: ['cadvisor:8080']
+  # - job_name: 'cadvisor'
+  #   static_configs:
+  #     # Use the INTERNAL port (8080), not the mapped host port (8081)
+  #     - targets: ['cadvisor:8080']
 
   - job_name: 'spring-boot-demo-app'
     metrics_path: '/actuator/prometheus'
     scrape_interval: 5s
     static_configs:
-      - targets: ['192.168.100.50:8081']
+      - targets: ['192.168.1.108:8081']
+
+  - job_name: 'blackbox-http'
+    metrics_path: /probe
+    params:
+      module: [http_2xx]
+    static_configs:
+      - targets:
+        # Pings the SonarQube web portal port on your machine
+        - http://sonarqube:9000
+        - https://ibrahimmoalim.dev
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: blackbox-exporter:9115
 
   # Monitor remote servers
   # - job_name: 'remote-servers-via-ssh'
