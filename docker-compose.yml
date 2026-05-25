@@ -97,26 +97,26 @@ services:
     networks:
       - monitoring-network
 
-  cadvisor:
-    # use the image below instead of 'google/cadvisor:latest'
-    image: gcr.io/cadvisor/cadvisor:v0.47.0
-    container_name: cadvisor
-    restart: unless-stopped
-    # cAdvisor requires root-level access to the host's kernel information
-    # to collect container metrics accurately.
-    privileged: true
-    volumes:
-      - /:/rootfs:ro
-      - /var/run:/var/run:ro
-      - /sys:/sys:ro
-      - /var/lib/docker/:/var/lib/docker:ro
-      - /dev/disk/:/dev/disk:ro
-    devices:
-      - /dev/kmsg
-    ports:
-      - "8083:8080"
-    networks:
-      - monitoring-network
+  # cadvisor:
+  #   # use the image below instead of 'google/cadvisor:latest'
+  #   image: gcr.io/cadvisor/cadvisor:v0.47.0
+  #   container_name: cadvisor
+  #   restart: unless-stopped
+  #   # cAdvisor requires root-level access to the host's kernel information
+  #   # to collect container metrics accurately.
+  #   privileged: true
+  #   volumes:
+  #     - /:/rootfs:ro
+  #     - /var/run:/var/run:ro
+  #     - /sys:/sys:ro
+  #     - /var/lib/docker/:/var/lib/docker:ro
+  #     - /dev/disk/:/dev/disk:ro
+  #   devices:
+  #     - /dev/kmsg
+  #   ports:
+  #     - "8083:8080"
+  #   networks:
+  #     - monitoring-network
 
   # Loki: The central storage engine for all logs (The "database" for text logs)
   loki:
@@ -176,6 +176,18 @@ services:
       # OTLP HTTP ingest port. Alternative endpoint for apps utilizing HTTP-based tracing.
       - "127.0.0.1:4318:4318"
     restart: unless-stopped
+    networks:
+      - monitoring-network
+
+  # Blackbox Exporter: Turns Prometheus into an external HTTP prober
+  blackbox-exporter:
+    image: prom/blackbox-exporter:latest
+    container_name: blackbox-exporter
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:9115:9115"
+    volumes:
+      - ./blackbox.yml:/etc/blackbox_exporter/config.yml
     networks:
       - monitoring-network
 
