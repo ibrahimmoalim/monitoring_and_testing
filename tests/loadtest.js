@@ -1,4 +1,5 @@
-// k6 run --vus 5 --duration 10s loadtest.js
+// This uploads results to prometheus so you can view them in grafana using dashboard 18030 (k6 Prometheus (Native Histograms))
+// K6_PROMETHEUS_RW_TREND_AS_NATIVE_HISTOGRAM=true k6 run --out experimental-prometheus-rw=http://localhost:9090/api/v1/write --vus 5 --duration 10s loadtest.js
 
 // this simulates 'vus' (virtual users (simulated users)) hitting the App
 // simultaneously for a 'duration', it's like 'vus' number of people
