@@ -1,3 +1,5 @@
+// k6 run --vus 5 --duration 10s loadtest.js
+
 // this simulates 'vus' (virtual users (simulated users)) hitting the App
 // simultaneously for a 'duration', it's like 'vus' number of people
 // continuously clicking or refreshing the app at the exact same time
@@ -22,7 +24,7 @@ import http from 'k6/http';
 import { sleep } from 'k6';
 
 export const options = {
-    vus: 500, // 100 simulated users hitting the endpoint simultaneously
+    vus: 100, // 100 simulated users hitting the endpoint simultaneously
     duration: '30s',
 };
 
