@@ -26,8 +26,8 @@ export default async function sonarqubeLoginTest() {
         // Select input elements and fill out credentials
         // (Replace 'username' and 'password' with the actual local SonarQube
         // login username and password)
-        await page.locator('input[name="login"]').type('username');
-        await page.locator('input[name="password"]').type('password');
+        await page.locator('input[name="login"]').type('admin');
+        await page.locator('input[name="password"]').type('0hcZ2QKyZ2jYOgGG4l?');
 
         // Click the log in submission button
         const loginButton = page.locator('button[type="submit"]');
@@ -50,7 +50,7 @@ export default async function sonarqubeLoginTest() {
 }
 
 /*
-If you get problems after running this test file with:
+If there's an error after running this test file with:
 
 k6 run --out experimental-prometheus-rw=http://localhost:9090/api/v1/write sonarqube_login.js
 
