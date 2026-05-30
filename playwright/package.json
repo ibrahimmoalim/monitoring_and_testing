@@ -1,0 +1,14 @@
+{
+  "name": "playwright",
+  "version": "1.0.0",
+  "description": "- Free and open source framework for web automation testing, created by Microsoft - Apps it can test -> Web browser apps, Mobile web apps, and APIs - Languages -> JavaScript, TypeScript, Java, Python, and .NET (C#) - Browsers -> all modern engines like Chromium (google chrome, brave etc), WebKit, and Firefox. You can use these browsers in a headless (no GUI, it's the default and very fast becuase all tests run in the background) or headed (You can watch Playwright move the mouse, type text into inputs, click buttons, and navigate through pages in real-time.) mode. - OS support -> Linux, windows, macos. - Built-in reportes or custom reporters - CI/CD and Docker support - Website -> https://playwright.dev/ - Github -> https://github.com/microsoft/playwright",
+  "main": "index.js",
+  "scripts": {},
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@playwright/test": "^1.60.0",
+    "@types/node": "^25.9.1"
+  }
+}
