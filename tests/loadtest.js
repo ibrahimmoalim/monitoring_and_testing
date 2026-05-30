@@ -1,3 +1,8 @@
+// The connection between k6 and Prometheus is entirely push-based.
+// Because the k6 command uses --out experimental-prometheus-rw, k6 acts as a client that actively uploads data directly to Prometheus. Adding any scrape targets or job configs for k6 inside the prometheus.yml is not required.
+// for the push-based connection to work, the prometheus service inside docker-compose must have
+// '--web.enable-remote-write-receiver' under command:
+
 // This uploads results to prometheus so you can view them in grafana using dashboard 18030 (k6 Prometheus (Native Histograms))
 // K6_PROMETHEUS_RW_TREND_AS_NATIVE_HISTOGRAM=true k6 run --out experimental-prometheus-rw=http://localhost:9090/api/v1/write --vus 5 --duration 10s loadtest.js
 
