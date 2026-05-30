@@ -58,7 +58,13 @@ scrape_configs:
     metrics_path: '/actuator/prometheus'
     scrape_interval: 5s
     static_configs:
-      - targets: ['192.168.1.107:8084']
+      # this allows a docker network to talk to the host network
+      # because the app is in host and prometheus is in docker
+      # make sure you allow only prometheus docker ip addr to
+      # hit host port 8084 using UFW, first get prometheus ip inside docker:
+      # docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' prometheus
+      # then allow it: sudo ufw allow from <ip-addr-from-inspect-command> to any port 8084 proto tcp
+      - targets: ['host.docker.internal:8084']
 
   - job_name: 'blackbox-http'
     metrics_path: /probe
