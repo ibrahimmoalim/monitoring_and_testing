@@ -31,4 +31,63 @@
     - Name the e2e dir or just leave it default 'tests'
     - Add GitHub actions: true
     - Install browsers: true
-    - Install OS dependencies: false (install if required later with: `sudo npx playwright install-deps`)
+    - Install OS dependencies: true
+
+## Commands
+
+- check playwright version
+    ```bash
+    npm playwright -v
+    ```
+- see all playwright commands
+    ```bash
+    npx playwright -h
+    ```
+    > `npx` is used to execute `npm` libraries on a local directory
+- run parallel tests to save time
+    ```bash
+    npx playwright test --workers 6
+    ```
+    > 6 if running 6 tests
+- run tests on a specific file
+    > It detects tests/ by default.
+    > You can just type one word thats in the test file name,
+    > and playwright will detect and test it
+    ```bash
+    npx playwright test example
+    ```
+    or multiple files:
+    ```bash
+    npx playwright test file1 file2.spec.js
+    ```
+    > adding the .spec.js is not required
+- run specific tests by their title in the code
+    ```bash
+    npx playwright test -g started
+    ```
+    > Playwright will look through the test files and only execute tests where the title contains the word "started".
+    > '-g' stands for --grep, It is used to filter and run specific tests based on their title or description using a regular expression or text match.
+- run test on a specific browser
+    ```bash
+    npx playwright test --project=firefox
+    ```
+    > will only test on firefox
+- run in a `headed` mode
+    ```bash
+    npx playwright test --project=chromium --headed
+    ```
+    > this will pop-up a browser window and show playwright running tests on it
+- run with debug
+    ```bash
+    npx playwright test --project=webkit --debug
+    ```
+    > this will run in `headed` mode by default because it wants to show more details, it will allow you to pause and forward making it easier to see how it does the test
+- start test from a specific line in the test code (it must be the starting line of that specific test block test(...))
+    ```bash
+    npx playwright test :11 --project=firefox --debug
+    ```
+    > this goes straight into line 11 where the second test starts in the code and playwright starts testing from there, skipping the first test block completely
+    You can test a specific file and start from a specific line (test block):
+    ```bash
+    npx playwright test example:11 --project=firefox --debug
+    ```
