@@ -91,3 +91,36 @@
     ```bash
     npx playwright test example:11 --project=firefox --debug
     ```
+
+### Codegen (Test Generator)
+
+- see all the options/args for Codegen command
+    ```bash
+    npx playwright codegen --help
+    ```
+- record tests with Codegen
+    ```bash
+    npx playwright codegen
+    ```
+    > This will open 2 windows like when running tests with `--debug`, window 1 is the browser and window 2 is the playwright inspector which generates test code as you click through a specific website, you can then use that test code to run tests (it basically writes tests for you)
+- run codegen with a specific URL (so it directly opens it)
+    ```bash
+    npx playwright codegen ibrahimmoalim.dev
+    ```
+- record on a specific browser
+    ```bash
+    npx playwright codegen --browser firefox
+    ```
+
+
+
+## Debug
+
+- if missing dependencies error is shown after running tests
+    ```bash
+    sudo npx playwright install-deps
+    ```
+    Ensure browsers are also up-to-date alongside their dependencies
+    ```bash
+    npx playwright install --with-deps
+    ```
