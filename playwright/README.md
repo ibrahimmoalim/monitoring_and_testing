@@ -108,11 +108,24 @@
     npx playwright codegen ibrahimmoalim.dev
     ```
 - record on a specific browser
+    > by default it uses chrome
     ```bash
     npx playwright codegen --browser firefox
     ```
-
-
+- save the generated test code in a file
+    ```bash
+    npx playwright codegen -o tests/codegen_test.spec.js
+    ```
+    > '-o' meaning output, this will create a file named 'codegen_test.spec.js' in tests/ and save the generated test code in there using javascript as the language by default.
+- record on a specific device
+    ```bash
+    npx playwright codegen ibrahimmoalim.dev --device="Galaxy S8" -o tests/codegen_test_mobile.spec.js
+    ```
+- emulate color scheme (only works if website supports theme change)
+    ```bash
+    npx playwright codegen api.ibrahimmoalim.dev --color-scheme=dark
+    ```
+    > opens the website in dark mode (default is light)
 
 ## Debug
 
