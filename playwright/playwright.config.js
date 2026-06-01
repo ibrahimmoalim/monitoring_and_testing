@@ -21,11 +21,11 @@ export default defineConfig({
   testDir: './tests',
   // max time one test can run for
   // this is 10ms * 1000 which is 10s
-  timeout: 10 * 1000,
+  // timeout: 10 * 1000,
   expect: {
     // max time expect() should wait for the condition to be met
     // e.g await expect(page.getByRole('heading', { name: 'Overview' })).toBeVisible();
-    timeout: 3000
+    // timeout: 3000
   },
   /* Run tests in files in parallel */
   fullyParallel: true,
