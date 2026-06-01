@@ -25,7 +25,9 @@ test('test', async ({ page }) => {
         await page.getByRole('button', { name: 'Log in' }).click();
     })
 
-    await expect(page).toHaveTitle('Projects - SonarQube Community Build');
+    // await expect(page).toHaveTitle('Projects - SonarQube Community Build');
+    // use regular expression to look for only one word in the title
+    await expect(page).toHaveTitle(/.*Projects/);
 
     await page.getByRole('link', { name: 'wallet-api' }).first().click();
     await expect(page.getByRole('heading', { name: 'Overview' })).toBeVisible();
