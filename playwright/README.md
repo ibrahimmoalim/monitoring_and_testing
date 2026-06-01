@@ -116,12 +116,26 @@
     npx playwright test file1 file2.spec.js
     ```
     > adding the .spec.js is not required
-- run specific tests by their title in the code
+- run specific tests by their name in the code
     ```bash
     npx playwright test -g started
     ```
-    > Playwright will look through the test files and only execute tests where the title contains the word "started".
-    > '-g' stands for --grep, It is used to filter and run specific tests based on their title or description using a regular expression or text match.
+    > '-g' stands for --grep, It is used to filter and run specific tests based on their name or description using a regular expression or text match.
+    > Playwright will look through the test files and only execute tests where the name contains the word "started", it's case-sensitive so if the word is 'Started' it will miss it, use:
+    ```bash
+    npx playwright test -g "/started/i"
+    ```
+    > This will look for 'started' word whether it has capital letters or not
+- skip specific tests by their name in the code
+    > This greps the word but skips those tests that have that word in the test name
+    ```bash
+    npx playwright test --grep-invert "/started/i"
+    ```
+    or
+    ```bash
+    # case-sensitive
+    npx playwright test --grep-invert started
+    ```
 - run test on a specific browser
     ```bash
     npx playwright test --project=firefox
