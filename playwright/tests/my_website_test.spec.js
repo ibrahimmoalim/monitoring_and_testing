@@ -1,5 +1,31 @@
-import { test, expect } from '@playwright/test';
+import { test, expect, browserName } from '@playwright/test';
 
+// 'test.skip' skips this whole test block
+test.skip('skip this test', async ({ page }) => {
+    await page.goto('https://api.ibrahimmoalim.dev/')
+})
+
+// 'test.fail()' inside a test block means expect a crash or fail but the
+// overall test result will say passed because "it successfully failed it"
+// use 'test.fail()' for minor bugs you want to fix later, but you want to
+// deploy now and not fail the entire pipeline.
+// Use 'throw new Error('error message') for critical things like DB connection failed
+// 'throw new Error' actually fails the test and shows failure on
+// test report with the error message you give it.
+test('expected to fail', async ({ page }) => {
+    // basic condition check for testing
+    if (2 + 3 === 4) {
+        await page.goto('https://api.ibrahimmoalim.dev/')
+    } else {
+        test.fail();
+        throw new Error('2 + 3 does not equal 4');
+    }
+})
+
+// skip test on specific browser and add a message
+test('skip on webkit', async ({ page, browserName }) => {
+    test.skip(browserName === 'webkit', 'webkit has issues that will be fixed later')
+})
 
 // This is how to group tests that share a single page or something else
 // the 'test.before..' and 'test.after..' blocks in this describe block will only
