@@ -33,6 +33,61 @@
     - Install browsers: true
     - Install OS dependencies: true
 
+- Install `dotenv` package to inject `.env` variables
+    ```bash
+    npm install dotenv --save-dev
+    ```
+    > `--save-dev` since this is for testing only, the package will be listed under the "devDependencies" section rather than the standard "dependencies" section. It is never bundled into the final application.
+    Make sure to add the config to load env vars on `playwright.config.js` file:
+    ```JS
+    import { defineConfig, devices } from '@playwright/test';
+
+    // * Read environment variables from file.
+    // * https://github.com/motdotla/dotenv
+    import dotenv from 'dotenv';
+    import path from 'node:path';
+    dotenv.config({ path: path.resolve(__dirname, '.env') });
+
+    /**
+    * @see https://playwright.dev/docs/test-configuration
+    */
+    export default defineConfig({
+    use: {
+        // Captures a screenshot of test results only when a test fails (saves disk space on Staging CI)
+        screenshot: 'only-on-failure',
+        // Collect trace when retrying on a failed test
+        trace: 'on-first-retry',
+    },
+
+    testDir: './tests',
+    /* Run tests in files in parallel */
+    // ... rest of code
+    ```
+    To use the `.env` vars in test code:
+    ```JS
+    // ... add the imports and test block initiation above
+    const username = process.env.TEST_USERNAME;
+    const password = process.env.TEST_PASSWORD;
+
+    // Defensive check: Ensure the test fails early if variables are missing
+    if (!username || !password) {
+        throw new Error('CRITICAL: TEST_USERNAME or TEST_PASSWORD environment variables are not defined!');
+    }
+
+    // 3. Fill out the login form
+    await page.locator('#username-input').fill(username);
+    await page.locator('#password-input').fill(password);
+    // ... rest of code
+    ```
+    On Linux staging server, you can use:
+    ```bash
+    export TEST_USERNAME="linux_staging_user"
+    export TEST_PASSWORD="StagingPasswordXYZ"
+    export BASE_URL="https://linux-staging.mycompany.com"
+
+    npx playwright test
+    ```
+
 ## Commands
 
 - check playwright version
