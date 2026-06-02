@@ -1,4 +1,4 @@
-import { test, expect, browserName } from '@playwright/test';
+import { test, expect } from '@playwright/test';
 
 // 'test.skip' skips this whole test block
 test.skip('skip this test', async ({ page }) => {
