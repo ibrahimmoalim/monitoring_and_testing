@@ -196,6 +196,14 @@
     ```
     > opens the website in dark mode (default is light)
 
+## API Testing
+
+- Run `playwright` in GUI mode
+    ```bash
+    npx playwright test --ui
+    ```
+    > This will open a playwright app window that shows all your test files in the rigt side-bar, you can run tests with a click, run specific tests in a test file, see test results, response results from Get methods, duration requests took and more
+
 ## Debug
 
 - if missing dependencies error is shown after running tests
