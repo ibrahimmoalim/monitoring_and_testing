@@ -19,7 +19,7 @@ services:
     # ensures Prometheus actually reads it.
 
     # --storage.tsdb.path: Defines where the Time Series Database (TSDB)
-    # stores the actual data (your historical metrics). We point this to
+    # stores the actual data (the historical metrics). We point this to
     # /prometheus because that is where the persistent Docker volume is mounted.
     command:
       - '--config.file=/etc/prometheus/prometheus.yml'
@@ -88,7 +88,7 @@ services:
 
     # Exclusion Filter: This is a regex that tells Node Exporter:
     # "Ignore virtual file systems like /dev or /proc when reporting Disk Usage."
-    # This keeps your dashboard clean so you only see your actual hard drives
+    # This keeps the dashboard clean so you only see the actual hard drives
     # (like / or /home) rather than 20 tiny system partitions.
     command:
       - '--path.procfs=/host/proc'
@@ -171,7 +171,7 @@ services:
     # to ensure it never drops traces during a reboot.
     command: [ "--config.file=/etc/tempo.yaml" ]
     ports:
-      # the '127.0.0.1' Explicitly binds port 4318 to your host's localhost
+      # the '127.0.0.1' Explicitly binds port 4318 to the host's localhost
       # Tempo's web API port (Grafana uses this to fetch and display traces)
       - "127.0.0.1:3200:3200"
       # OTLP gRPC ingest (Your Spring Boot app can send traces here)
@@ -244,6 +244,23 @@ services:
         # Tells Docker to guarantee SonarQube has 1.5GB to start up comfortably.
         reservations:
           memory: 1.5G
+    networks:
+      - monitoring-network
+
+  owasp-zap:
+    image: ghcr.io/zaproxy/zaproxy:stable
+    container_name: owasp-zap
+    restart: unless-stopped
+    ports:
+      - "8085:8080"  # Webswing browser UI dashboard
+      - "8090:8090"  # ZAP internal proxy port
+    volumes:
+      # Mounts the current host directory to drop reports out of the container
+      - .:/zap/wrk/:rw
+    extra_hosts:
+      # Bridges the container network gap back to the un-dockerized Java API on port 8081
+      - "host.docker.internal:host-gateway"
+    command: zap-webswing.sh
     networks:
       - monitoring-network
 
