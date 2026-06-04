@@ -153,14 +153,18 @@ mvn spring-boot:run
 ```
 
 
-*Quick check:* Open a browser and head to `http://localhost:8081/swagger-ui.html`. You should see the real fintech API endpoint definitions map out visually.
+*Quick check:* Open a browser and head to:
+```
+http://localhost:8081/swagger-ui.html
+```
+You should see the real fintech API endpoint definitions map out visually.
 
 ### Access the ZAP Web Interface
 
 Open the web browser and navigate to the designated ZAP port:
 
 ```
-http://localhost:8085/?anonym=true&app=ZAP
+http://localhost:8085/zap/
 
 ```
 
@@ -190,4 +194,4 @@ ZAP will begin aggressively injecting payloads (XSS, SQL Injection variations) i
 
 ### Extract The Reports
 
-Once the scan finishes, look at the **Alerts** panel at the bottom of the ZAP browser interface to analyze the discovered vulnerabilities. To get a permanent file version, click **Report** in the top menu bar $\rightarrow$ **Generate Report** to export a clean HTML breakdown straight onto the host machine directory via the shared container mount.
+Once the scan finishes, look at the **Alerts** panel at the bottom left of the ZAP browser interface to analyze the discovered vulnerabilities. To get a permanent file version, click **Report** in the top menu bar $\rightarrow$ **Give it Report Title like `wallet_app_owasp_report-<year-month-day>`** $\rightarrow$ **Report Name: `wallet_app_owasp_report-<year-month-day>.html`** $\rightarrow$ **Set the Report Directory to be `/zap/wrk`** (which is the directory in the ZAP container mapped to hosts dir where docker-compose file is) $\rightarrow$ **Generate Report** to export a clean HTML breakdown straight onto the host machine directory via the shared container mount.

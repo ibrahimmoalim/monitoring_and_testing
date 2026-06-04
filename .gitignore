@@ -3,3 +3,5 @@ zap_root*
 
 .ZAP/
 .ZAP_JVM_logs/
+
+*-Report-*
