@@ -171,8 +171,9 @@ The complete desktop GUI engine will initialize right inside the browser session
 1. In the top navigation bar of the ZAP interface, click **Import** $\rightarrow$ **Import an OpenAPI Definition**.
 2. For the Definition File or URL:
 ```
-/zap/wrk/openAPI_demo_wallet_app.json
+http://<host-private-ip-addr>:8081/v3/api-docs
 ```
+> http://192.168.1.x:8081/v3/api-docs (found with: `ip addr` command)
 3. For Target URL:
 ```
 http://host.docker.internal:8081
