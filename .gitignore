@@ -1,7 +1,5 @@
 .env
 zap_root*
 
-openAPI*
-
 .ZAP/
 .ZAP_JVM_logs/
