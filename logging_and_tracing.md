@@ -55,7 +55,7 @@ Now that the containers are running, you need to tell Grafana where to find them
 
 1. Search for **Loki** and select it.
 2. In the **Connection** URL field, enter: `http://loki:3100` (since they are on the same Docker network).
-3. Link Trace-to-Log: Scroll down to the Derived Fields or Trace to logs setting. Configure it to map your log's traceId so you can jump from a trace panel straight back to Loki logs:
+3. Link Trace-to-Log: Scroll down to the `Derived Fields` or Trace to logs setting. Configure it to map your log's traceId so you can jump from a trace panel straight back to Loki logs:
     - **Name**: `TraceID`
     - **Type**: `Regex in log line`
     - **Regex**: `traceId=(\w+)`
