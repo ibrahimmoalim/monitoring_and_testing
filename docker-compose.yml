@@ -33,7 +33,13 @@ services:
     ports:
       - "127.0.0.1:9090:9090"
     networks:
-      - monitoring-network
+      monitoring-network:
+        # since other containers might boot up before prometheus
+        # docker will give them dynamic addresses and so we cannot
+        # have a 172.18.0.x where x is lower than the amount of containers
+        # in this docker-compose, set it to ..50 so it always gets that
+        # same ip address.
+        ipv4_address: 172.18.0.50
 
   grafana:
     image: grafana/grafana:latest
@@ -280,6 +286,9 @@ volumes:
 networks:
   monitoring-network:
     driver: bridge
+    ipam:
+      config:
+        - subnet: 172.18.0.0/16
 
 # config for alertmanager
 configs:
