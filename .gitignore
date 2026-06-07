@@ -5,3 +5,7 @@ zap_root*
 .ZAP_JVM_logs/
 
 *-Report-*
+*.html
+wallet_app_owasp_report*
+
+.vscode
