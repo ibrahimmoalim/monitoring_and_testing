@@ -11,4 +11,4 @@ k6 version
 
 - Create a test script called `loadtest.js`
 
-- Check [loadtest.js](https://github.com/ibrahimmoalim/monitoring_and_testing/blob/main/tests/loadtest.js) for more info.
+- Check [loadtest.js](https://github.com/ibrahimmoalim/monitoring_and_testing/blob/main/k6_tests/loadtest.js) for more info.
