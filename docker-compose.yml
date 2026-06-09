@@ -46,7 +46,7 @@ services:
     container_name: grafana
     restart: unless-stopped
     ports:
-      - "3001:3000"
+      - "127.0.0.1:3001:3000"
     volumes:
       - grafana_data:/var/lib/grafana
     environment:
@@ -79,6 +79,8 @@ services:
   # (my debian)
   node-exporter:
     image: prom/node-exporter:latest
+    # run as user instead of root inside the container
+    # user: "1000:1000"
     container_name: node-exporter
     restart: unless-stopped
     volumes:
@@ -102,7 +104,7 @@ services:
       - '--path.sysfs=/host/sys'
       - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
     ports:
-      - "9100:9100"
+      - "127.0.0.1:9100:9100"
     networks:
       - monitoring-network
 
@@ -111,9 +113,6 @@ services:
   #   image: gcr.io/cadvisor/cadvisor:v0.47.0
   #   container_name: cadvisor
   #   restart: unless-stopped
-  #   # cAdvisor requires root-level access to the host's kernel information
-  #   # to collect container metrics accurately.
-  #   privileged: true
   #   volumes:
   #     - /:/rootfs:ro
   #     - /var/run:/var/run:ro
@@ -132,7 +131,7 @@ services:
     image: grafana/loki:3.0.0
     container_name: loki
     ports:
-      - "3100:3100"
+      - "127.0.0.1:3100:3100"
     volumes:
       - ./loki-config.yml:/etc/loki/local-config.yaml
       - loki_data:/loki
@@ -145,6 +144,7 @@ services:
   # Promtail: The log collector that grabs container logs and pushes them to Loki
   promtail:
     image: grafana/promtail:3.0.0
+    # user: "1000:1000"
     container_name: promtail
     volumes:
       # Mounts the custom configuration file created in this dir
@@ -225,7 +225,7 @@ services:
       - SONAR_JDBC_PASSWORD=${SONAR_JDBC_PASSWORD}
       - SONAR_JDBC_URL=${SONAR_JDBC_URL}
     ports:
-      - "9000:9000"
+      - "127.0.0.1:9000:9000"
     volumes:
       - sonarqube_data:/opt/sonarqube/data
       - sonarqube_extensions:/opt/sonarqube/extensions
@@ -258,8 +258,8 @@ services:
     container_name: owasp-zap
     restart: unless-stopped
     ports:
-      - "8085:8080"  # Webswing browser UI dashboard
-      - "8090:8090"  # ZAP internal proxy port
+      - "127.0.0.1:8085:8080"  # Webswing browser UI dashboard
+      - "127.0.0.1:8090:8090"  # ZAP internal proxy port
     volumes:
       # Mounts the current host directory to drop reports out of the container
       - .:/zap/wrk/:rw
