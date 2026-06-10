@@ -1,0 +1,63 @@
+services:
+
+  sonarqube-db:
+    image: postgres:16-alpine
+    container_name: sonarqube-db
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+    volumes:
+      - sonarqube_db_data:/var/lib/postgresql/data
+    networks:
+      - monitoring-testing
+
+  sonarqube:
+    image: sonarqube:community
+    container_name: sonarqube
+    restart: unless-stopped
+    depends_on:
+      - sonarqube-db
+    environment:
+      - SONAR_JDBC_USERNAME=${SONAR_JDBC_USERNAME}
+      - SONAR_JDBC_PASSWORD=${SONAR_JDBC_PASSWORD}
+      - SONAR_JDBC_URL=${SONAR_JDBC_URL}
+    ports:
+      - "127.0.0.1:9000:9000"
+    volumes:
+      - sonarqube_data:/opt/sonarqube/data
+      - sonarqube_extensions:/opt/sonarqube/extensions
+      - sonarqube_logs:/opt/sonarqube/logs
+    ulimits:
+      # 'nofile (Number of Open Files)', It tells the Linux kernel how many system
+      # file descriptors (which include open files, network sockets, and pipes) this
+      # specific container is allowed to keep open at the exact same time.
+      nofile:
+        # soft cap (minimum), default is 1024 which is too low for Elasticsearch
+        soft: 65536
+        # hard cap (max), Setting both soft and hard to 65536 locks the configuration
+        # in place, ensuring SonarQube always has an abundant, stable pool of file
+        # allocations to handle large codebases.
+        hard: 65536
+    deploy:
+      resources:
+        # Tells Docker that if SonarQube tries to consume more than 2.5GB of RAM,
+        # throttle it immediately so the host stays completely stable.
+        limits:
+          memory: 2.5G
+        # Tells Docker to guarantee SonarQube has 1.5GB to start up comfortably.
+        reservations:
+          memory: 1.5G
+    networks:
+      - monitoring-testing
+
+volumes:
+  sonarqube_db_data:
+  sonarqube_data:
+  sonarqube_extensions:
+  sonarqube_logs:
+
+networks:
+  monitoring-testing:
+      external: true
