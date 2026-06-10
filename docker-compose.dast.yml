@@ -1,0 +1,22 @@
+services:
+
+  owasp-zap:
+    image: ghcr.io/zaproxy/zaproxy:stable
+    container_name: owasp-zap
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:8085:8080"  # Webswing browser UI dashboard
+      - "127.0.0.1:8090:8090"  # ZAP internal proxy port
+    volumes:
+      # Mounts the current host directory to drop reports out of the container
+      - .:/zap/wrk/:rw
+    extra_hosts:
+      # Bridges the container network gap back to the un-dockerized Java API on port 8081
+      - "host.docker.internal:host-gateway"
+    command: zap-webswing.sh
+    networks:
+      - monitoring-testing
+
+networks:
+  monitoring-testing:
+    external: true
