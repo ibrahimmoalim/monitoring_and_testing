@@ -6,10 +6,10 @@
 // This uploads results to prometheus so you can view them in grafana using dashboard 18030 (k6 Prometheus (Native Histograms))
 // K6_PROMETHEUS_RW_TREND_AS_NATIVE_HISTOGRAM=true k6 run --out experimental-prometheus-rw=http://localhost:9090/api/v1/write --vus 5 --duration 10s loadtest.js
 
-// this simulates 'vus' (virtual users (simulated users)) hitting the App
-// simultaneously for a 'duration', it's like 'vus' number of people
+//'vus' (virtual users): simulates virtual users hitting the App
+// simultaneously for a 'duration', it's like a number of people
 // continuously clicking or refreshing the app at the exact same time
-// for 30 seconds.
+// for 30 seconds (if duration is set to 30s).
 
 // When the test is over (if the vus was 250 and duration 30s) you'll see something like:
 // running (0m30.1s), 000/250 VUs, 54818 complete and 0 interrupted iterations
@@ -31,7 +31,7 @@ import { sleep } from 'k6';
 
 export const options = {
     vus: 100, // 100 simulated users hitting the endpoint simultaneously
-    duration: '30s',
+    duration: '30s'
 };
 
 export default function apiLoadTest() {
