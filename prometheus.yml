@@ -68,12 +68,16 @@ scrape_configs:
 
   - job_name: 'blackbox-http'
     metrics_path: /probe
+    # ping these targets every 1min
+    scrape_interval: 1m
     params:
       module: [http_2xx]
     static_configs:
       - targets:
         # Pings the grafana web portal port
-        - http://grafana:9000
+        # since prometheus and grafana share the same
+        # docker network, it finds it by name and port inside docker
+        - http://grafana:3000
         # pings external URLs
         - https://ibrahimmoalim.dev
         - https://api.ibrahimmoalim.dev
