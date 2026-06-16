@@ -27,6 +27,7 @@
 
 
 import http from 'k6/http';
+import exec from 'k6/execution';
 import { sleep } from 'k6';
 
 export const options = {
@@ -34,7 +35,38 @@ export const options = {
     duration: '30s'
 };
 
+
 export default function apiLoadTest() {
-    http.get('http://localhost:8081/api/users');
+
+    // get all users
+    http.get('http://localhost:8081/api/users', {
+        // this name will show up in the dashboard
+        // instead of URL
+        tags: { name: 'Get Wallet App Users' }
+    });
+    // wait for 0.1s and send another req
     sleep(0.1);
+
+    // creates a unique username like: "demo_user_vu5_iter42"
+    const uniqueUsername = `demo_user_vu${exec.vu.idInTest}_iter${exec.vu.iterationInInstance}`;
+
+    // register users
+    const url = 'http://localhost:8081/api/users/register';
+
+    const payload = JSON.stringify({
+        username: uniqueUsername,
+        password: `${uniqueUsername}@walletApp`
+    })
+
+    const params = {
+        headers: {
+            'Content-Type': 'application/json',
+            // 'Authorization': 'Bearer <access-token>'
+        },
+        tags: { name: 'Register a User' }
+    };
+
+    http.post(url, payload, params);
+    sleep(0.2);
 }
+
