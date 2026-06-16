@@ -72,9 +72,14 @@ scrape_configs:
       module: [http_2xx]
     static_configs:
       - targets:
-        # Pings the SonarQube web portal port on your machine
-        - http://sonarqube:9000
+        # Pings the grafana web portal port
+        - http://grafana:9000
+        # pings external URLs
         - https://ibrahimmoalim.dev
+        - https://api.ibrahimmoalim.dev
+        - https://api.ibrahimmoalim.dev/compliments
+        # pings local demo java app outside docker
+        - http://host.docker.internal:8081/api/users
     relabel_configs:
       - source_labels: [__address__]
         target_label: __param_target
