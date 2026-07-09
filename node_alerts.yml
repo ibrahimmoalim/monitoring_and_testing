@@ -80,3 +80,27 @@ groups:
         annotations:
           summary: "Spike in Application Errors (5xx status codes)"
           description: "The application is throwing internal server exceptions at a rate of {{ $value }} per second."
+
+  - name: blackbox_exporter_alerts
+    rules:
+      # Alert if any HTTP/API endpoint probe fails
+      - alert: BlackboxProbeFailed
+        # probe_success == 0 means the target did not return a 2xx success status code
+        expr: probe_success == 0
+        for: 30s
+        labels:
+          severity: critical
+        annotations:
+          summary: "Endpoint Down: {{ $labels.instance }}"
+          description: "The Blackbox prober failed to hit target endpoint {{ $labels.instance }} for more than 30 seconds."
+
+      # Check if SSL/TLS certificates are going to expire soon
+      - alert: SSLCertExpiringSoon
+        # Fires an alert if an HTTPS certificate expires in less than 7 days
+        expr: (probe_ssl_earliest_cert_expiry - time()) / 3600 / 24 < 7
+        for: 1m
+        labels:
+          severity: warning
+        annotations:
+          summary: "SSL Certificate Expiring Soon on {{ $labels.instance }}"
+          description: "The SSL certificate for {{ $labels.instance }} expires in {{ printf \"%.1f\" $value }} days."
