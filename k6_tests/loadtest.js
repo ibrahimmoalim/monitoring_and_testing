@@ -70,3 +70,11 @@ export default function apiLoadTest() {
     sleep(0.2);
 }
 
+// To delete all test users from the DataBase so you can test again without getting a 'username already exists' error
+// for register endpoint (because these unique usernames will start with vu1_iter_0 and so on each time)
+// You can target all test users with a single database command.
+// Look at the left sidebar in the Adminer interface and click on SQL command.
+// Paste the following query into the text box and click Execute:
+// DELETE FROM users WHERE username LIKE 'demo_user_vu%';
+// It instantly deletes every single row where the username starts with demo_user_vu across all pages
+// in a fraction of a second, without touching any other data.
