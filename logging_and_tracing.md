@@ -38,9 +38,9 @@ Check [here](https://github.com/ibrahimmoalim/prometheus_and_grafana/blob/main/t
 
 Append these services to your existing Docker Compose file. They will automatically join your existing network so Grafana can talk to them.
 
-Already added [here](https://github.com/ibrahimmoalim/prometheus_and_grafana/blob/main/docker-compose.yml)
+Already added [here](https://github.com/ibrahimmoalim/prometheus_and_grafana/blob/main/docker-compose.monitoring.yml)
 
-Run `docker compose up -d` to pull the images and spin up the new services.
+Run `docker compose -f docker-compose.monitoring.yml up -d` to pull the images and spin up the new services.
 
 ---
 
