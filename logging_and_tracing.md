@@ -89,7 +89,11 @@ If it's still not showing data, click on the first panel and paste this in the `
 Save.
 For the second panel, paste this:
 ```
-{service_name="$app"} |= "$search" | logfmt
+# use '|~' instead of '|=', because '~' allows you to search for multiple patterns in one log line by doing:
+# pattern1.*pattern2.*pattern#  (.*) means 'and'. The patterns must be in that order, if you don't know the order:
+# pattern1.*pattern2|pattern2.*pattern1 ( | means or)
+# or search with OR operator (|): pattern1|pattern2
+{service_name="$app"} |~ "$search" | logfmt
 ```
 Save.
 Now you should be able to select by service_name or container in the `app` dropdown on the dashboard screen top left, and see logs.
