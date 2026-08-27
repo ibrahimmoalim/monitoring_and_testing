@@ -72,6 +72,7 @@ distributor:
       protocols:
         # Enables trace ingestion over HTTP (default port 4318)
         http:
+          endpoint: 0.0.0.0:4318
         # Enables trace ingestion over high-performance gRPC (default port 4317)
         # gRPC stands for Google Remote Procedure Call. It is a high-performance,
         # open-source framework developed by Google to help different applications
@@ -81,6 +82,7 @@ distributor:
         # is preferred over HTTP (port 4318) because it uses drastically less CPU
         # and network bandwidth.
         grpc:
+          endpoint: 0.0.0.0:4317
 
 # Defines where the actual trace data is stored
 storage:
