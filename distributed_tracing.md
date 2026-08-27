@@ -27,7 +27,7 @@ This saves the compiled `opentelemetry-javaagent.jar` to the directory the `wget
 
 ### Step 3: Run the Application
 
-Navigate to the core project directory (where `pom.xml` is located) and execute this exact multi-line command to start the backend API (if the ..javaagent.jar is not in `home/` then change that second line accordingly):
+Navigate to the core project directory (where `pom.xml` is located) and execute this exact multi-line command to start the backend API (if the ...javaagent.jar is not in `home/` then change that second line accordingly):
 
 ```bash
 mvn spring-boot:run \
@@ -37,6 +37,20 @@ mvn spring-boot:run \
   -Dotel.metrics.exporter=none \
   -Dotel.logs.exporter=none"
 
+```
+
+If tempo is installed on a different server:
+```bash
+-javaagent:/path/to/opentelemetry-javaagent.jar \
+-Dotel.exporter.otlp.endpoint=http://<monitoring-server-ip>:4318 \
+-Dotel.exporter.otlp.protocol=http/protobuf \
+-Dotel.service.name=<UNIQUE_APP_NAME> \
+-Dotel.metrics.exporter=none \
+-Dotel.logs.exporter=none \
+# for legacy spring support
+-Dotel.instrumentation.spring-web.enabled=true \
+-Dotel.instrumentation.logback-appender.enabled=false \
+-Dotel.instrumentation.log4j-appender.enabled=false
 ```
 
 ---
