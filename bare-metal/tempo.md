@@ -135,6 +135,7 @@ To allow Grafana to query Tempo and ensure SELinux allows the unprivileged proce
 ```bash
 # Allow Grafana (http_port_t) to initiate outbound TCP connections to Tempo on port 3200
 sudo semanage port -a -t http_port_t -p tcp 3200
+sudo semanage port -a -t http_port_t -p tcp 4318
 
 # Fix SELinux file labeling on binary, config, and data paths
 sudo restorecon -v /usr/local/bin/tempo
