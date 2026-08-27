@@ -96,6 +96,14 @@ storage:
 
 ```
 
+## Firewall
+```bash
+# Allow OTLP HTTP port through the firewall
+sudo firewall-cmd --permanent --add-port=4318/tcp
+
+# Reload firewall to apply changes
+sudo firewall-cmd --reload
+```
 
 ## Systemd Service File (`/etc/systemd/system/tempo.service`)
 
