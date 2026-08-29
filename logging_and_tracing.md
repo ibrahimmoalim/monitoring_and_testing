@@ -5,6 +5,7 @@ To make this work, you will need to add four new pieces to your `docker-compose.
 1. **Loki:** The log storage engine.
 2. **Promtail:** The log shipper (it reads your Docker logs and sends them to Loki).
 3. **Tempo:** The trace storage engine.
+
 What is a Trace? (Why do you need Tempo?)
 
 In modern software, a single user action (like clicking "Buy Now" on a banking app) doesn't just hit one server. It triggers a chain reaction across dozens of microservices: the Frontend talks to the Authentication service, which talks to the Payment gateway, which updates the Database, and notifies the Shipping service.
